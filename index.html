@@ -17,7 +17,7 @@
 
     io.on('controller_connected', function(bool) {
       if (bool) {
-        console.log("Connected successfully to the game");
+        console.log("Connected successfully to the game, " + window.location.href.split('?id=')[1]);
       } else {
         console.log("Could not connect to the game");
       }

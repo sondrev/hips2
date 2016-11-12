@@ -22,7 +22,10 @@ io.on('connection', (socket) => {
 
       console.log("Controller trying to connect to " + g_id)
 
-     if (true) {
+      console.log("GameSocket[g_id]: " + game_sockets[g_id])
+      console.log("Controller id: " + game_sockets[g_id].controller_id)
+
+     if (game_sockets[g_id] && !game_sockets[g_id].controller_id) {
         controller_sockets[socket.id] = {
           socket: socket,
           game_id: g_id

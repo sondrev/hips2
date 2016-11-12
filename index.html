@@ -28,7 +28,11 @@
 
 
   } else {
-    document.write("<body onload='init()';><p> Hello frontend! </p>");
+    //document.write("<body onload='init()';><p> Hello frontend! </p>");
+
+    document.write("<body onload='init();'><canvas id='canvas' width='800' height='500'></canvas><button onclick='moveRight();' class='load-image'>Load Image</button></body>");
+
+
     //SPILL ENGINE
     var circle;
     var stage;

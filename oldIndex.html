@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  	<title>Smartphone Controller Game</title>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+  <script>
+	var io = io.connect();
+
+	io.on('connect', function() {
+  		alert("Connected!");
+	});
+  </script>
+</body>
+
+</html>

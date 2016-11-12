@@ -22,12 +22,6 @@ io.on('connection', (socket) => {
 
       console.log("Controller trying to connect to " + g_id)
 
-      for (var game_id in game_sockets) {
-        console.log("GameID: " + game_id)
-      }
-
-      console.log("GameSocket[g_id]: " + game_sockets[g_id])
-
      if (game_sockets[g_id] && !game_sockets[g_id].controller_id) {
         controller_sockets[socket.id] = {
           socket: socket,
@@ -57,7 +51,36 @@ io.on('connection', (socket) => {
   socket.emit("game_connected");
   });
 
-  socket.on('disconnect', () => console.log('Client disconnected'));
+  socket.on('disconnect', function () {
+
+      // Game
+      if (game_sockets[socket.id]) {
+
+        console.log("Game disconnected");
+
+        if (controller_sockets[game_sockets[socket.id].controller_id]) {
+
+          controller_sockets[game_sockets[socket.id].controller_id].socket.emit("controller_connected", false);
+          controller_sockets[game_sockets[socket.id].controller_id].game_id = undefined;
+        }
+
+        delete game_sockets[socket.id];
+      }
+
+      // Controller
+      if (controller_sockets[socket.id]) {
+
+        console.log("Controller disconnected");
+
+        if (game_sockets[controller_sockets[socket.id].game_id]) {
+
+          game_sockets[controller_sockets[socket.id].game_id].socket.emit("controller_connected", false);
+          game_sockets[controller_sockets[socket.id].game_id].controller_id = undefined;
+        }
+
+        delete controller_sockets[socket.id];
+      }
+    });
 });
 
 

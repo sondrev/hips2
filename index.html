@@ -4,6 +4,7 @@
 <head>
   	<title>Smartphone Controller Game</title>
 	<script src="/socket.io/socket.io.js"></script>
+  <script src="//davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
 </head>
 
 <body>
@@ -25,15 +26,35 @@
 
 
   } else {
+
+    var qr = document.createElement('div');
+
+    qr.id = "qr";
+    document.body.appendChild(qr);
+
   	io.on('connect', function() {
     		io.emit('game_connect')
   	});
 
     var game_connected = function() {
       var url = "http://hips2.herokuapp.com?id=" + io.id;
-      document.body.innerHTML += url;
+
+      //Add QR-code
+      var qr_code = new QRCode("qr");
+      qr_code.makeCode(url);
+
       io.removeListener('game_connected', game_connected);
     };
+
+    io.on('controller_connected', function(connected){
+
+      if (connected) {
+        qr.style.display = "none";
+      }else{
+        qr.style.display = "block";
+      }
+
+    });
 
     io.on('game_connected', game_connected);
   }

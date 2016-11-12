@@ -2,7 +2,7 @@ var express = require('express'),
     http    = require('http'),
     app     = express(),
     server  = http.createServer(app),
-    port    = 8080;
+    port    = 80;
 
 server.listen(port);
 

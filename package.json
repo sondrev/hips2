@@ -1,0 +1,7 @@
+{
+  "name": "smartphone-controller-game",
+  "version": "0.1.0",
+  "devDependencies": {
+    "express": "*"
+  }
+}

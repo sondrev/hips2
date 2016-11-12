@@ -52,7 +52,6 @@
       createjs.Ticker.addEventListener("tick", stage);
     }
     // -- SPLLLENGINE
-
     var qr = document.createElement('div');
 
     qr.id = "qr";
@@ -62,14 +61,17 @@
     		io.emit('game_connect')
   	});
 
-    io.on('move_right', function() {
+    var rightListener = function () {
       moveRight();
-    });
+    }
+
+    io.on('move_right', rightListener);
 
     var game_connected = function() {
       var url = "http://hips2.herokuapp.com?id=" + io.id;
 
       //Add QR-code
+      console.log(url);
       var qr_code = new QRCode("qr");
       qr_code.makeCode(url);
 

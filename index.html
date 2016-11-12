@@ -15,7 +15,7 @@
 	var io = io.connect();
 
   if (window.location.href.indexOf('?id=') > 0) {
-    <p> Hello frontend! </p>
+    document.write("<p> Hello frontend! </p>");
 
     io.emit('controller_connect', window.location.href.split('?id=')[1]);
     io.on('controller_connected', function(bool) {

@@ -6,12 +6,18 @@ var express = require('express'),
 
 server.listen(port);
 
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+	console.log("Client connected!")
+});
+
 app
 
   // Set up index
   .get('/', function(req, res) {
 
-    res.sendFile(__dirname + 'https://cdn.css-tricks.com/index.html');
+    res.sendFile(__dirname + '/index.html');
 
   });
 

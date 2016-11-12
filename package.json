@@ -3,5 +3,8 @@
   "version": "0.1.0",
   "devDependencies": {
     "express": "*"
+  },
+  "dependencies": {
+    "socket.io": "^1.5.1"
   }
 }

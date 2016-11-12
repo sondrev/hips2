@@ -22,8 +22,11 @@ io.on('connection', (socket) => {
 
       console.log("Controller trying to connect to " + g_id)
 
+      for (var game_id in game_sockets) {
+        console.log("GameID: " + game_id)
+      }
+
       console.log("GameSocket[g_id]: " + game_sockets[g_id])
-      console.log("Controller id: " + game_sockets[g_id].controller_id)
 
      if (game_sockets[g_id] && !game_sockets[g_id].controller_id) {
         controller_sockets[socket.id] = {
@@ -43,14 +46,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('game_connect', function(){
-    console.log("Game connected");
 
-    game_sockets[socket.id] = {
-      socket: socket,
-      controller_id: undefined
-    };
+  console.log("Game connected");
 
-    socket.emit("game_connected");
+  game_sockets[socket.id] = {
+    socket: socket,
+    controller_id: undefined
+  };
+
+  socket.emit("game_connected");
   });
 
   socket.on('disconnect', () => console.log('Client disconnected'));

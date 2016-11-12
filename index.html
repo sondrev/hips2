@@ -30,7 +30,7 @@
   	});
 
     var game_connected = function() {
-      var url = "http://localhost:3000?id=" + io.id;
+      var url = "http://hips2.herokuapp.com?id=" + io.id;
       document.body.innerHTML += url;
       io.removeListener('game_connected', game_connected);
     };

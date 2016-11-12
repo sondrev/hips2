@@ -8,13 +8,11 @@
   <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
 </head>
 
-
-
   <script>
 	var io = io.connect();
 
   if (window.location.href.indexOf('?id=') > 0) {
-    document.write("<body><p> Hello controll! </p>");
+    document.write("<body> <p> Hello controll! </p> <button onclick='sendRightCommand();' class='load-image'> GO RIGHT </button>");
 
     io.emit('controller_connect', window.location.href.split('?id=')[1]);
     io.on('controller_connected', function(bool) {
@@ -25,11 +23,14 @@
       }
     });
 
+    function sendRightCommand() {
+      io.emit("move_right");
+    }
 
   } else {
     //document.write("<body onload='init()';><p> Hello frontend! </p>");
 
-    document.write("<body onload='init();'><canvas id='canvas' width='800' height='500'></canvas><button onclick='moveRight();' class='load-image'>Load Image</button></body>");
+    document.write("<body onload='init();'><canvas id='canvas' width='800' height='500'></canvas><button onclick='moveRight();' class='load-image'>Load Image</button>");
 
 
     //SPILL ENGINE
@@ -58,6 +59,10 @@
   	io.on('connect', function() {
     		io.emit('game_connect')
   	});
+
+    io.on('move_right', function() {
+      moveRight();
+    });
 
     var game_connected = function() {
       var url = "http://hips2.herokuapp.com?id=" + io.id;

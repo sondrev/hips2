@@ -9,13 +9,13 @@
 
 </head>
 
-<body>
+
 
   <script>
 	var io = io.connect();
 
   if (window.location.href.indexOf('?id=') > 0) {
-    document.write("<p> Hello controll! </p>");
+    document.write("<body><p> Hello controll! </p>");
 
     io.emit('controller_connect', window.location.href.split('?id=')[1]);
     io.on('controller_connected', function(bool) {
@@ -28,7 +28,7 @@
 
 
   } else {
-    document.write("<p> Hello frontend! </p>");
+    document.write("<body><p> Hello frontend! </p>");
     //SPILL ENGINE
     var circle;
     var stage;

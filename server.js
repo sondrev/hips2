@@ -21,6 +21,9 @@ io.on('connection', (socket) => {
   socket.on('move_right', function(game_ID) {
       game_sockets[game_ID].socket.emit('move_right')
   });
+  socket.on('move_left', function(game_ID) {
+      game_sockets[game_ID].socket.emit('move_left')
+  });
 
   socket.on('controller_connect', function(g_id) {
 

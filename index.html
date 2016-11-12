@@ -10,14 +10,14 @@
 </head>
 
 <body>
-  <p> Hello World2! </p>
+
   <script>
 	var io = io.connect();
 
   if (window.location.href.indexOf('?id=') > 0) {
+    <p> Hello frontend! </p>
 
     io.emit('controller_connect', window.location.href.split('?id=')[1]);
-
     io.on('controller_connected', function(bool) {
       if (bool) {
         console.log("Connected successfully to the game, " + window.location.href.split('?id=')[1]);

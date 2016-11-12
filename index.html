@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
-  	<title>Smartphone Controller Game</title>
-	<script src="/socket.io/socket.io.js"></script>
-  <script src="https://davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
+  	 <title>Smartphone Controller Game</title>
+	   <script src="/socket.io/socket.io.js"></script>
+     <script src="https://davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
+     <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+
 </head>
 
 <body>
@@ -26,6 +28,23 @@
 
 
   } else {
+    //SPILL ENGINE
+    var circle;
+    var stage;
+    function moveRight() {
+      circle.x += 50;
+    }
+    function init() {
+      stage = new createjs.Stage("canvas");
+      circle = new createjs.Shape();
+      circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
+      circle.x = 100;
+      circle.y = 100;
+      stage.addChild(circle);
+      createjs.Ticker.setFPS(60);
+      createjs.Ticker.addEventListener("tick", stage);
+    }
+    // -- SPLLLENGINE
 
     var qr = document.createElement('div');
 

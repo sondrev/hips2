@@ -14,17 +14,19 @@
   if (window.location.href.indexOf('?id=') > 0) {
     document.write("<body> <p> Hello controll! </p> <button onclick='sendRightCommand();' class='load-image'> GO RIGHT </button>");
 
-    io.emit('controller_connect', window.location.href.split('?id=')[1]);
+    var game_ID = window.location.href.split('?id=')[1];
+
+    io.emit('controller_connect', game_ID);
     io.on('controller_connected', function(bool) {
       if (bool) {
-        console.log("Connected successfully to the game, " + window.location.href.split('?id=')[1]);
+        console.log("Connected successfully to the game, " + game_ID);
       } else {
         console.log("Could not connect to the game");
       }
     });
 
     function sendRightCommand() {
-      io.emit("move_right");
+      io.emit("move_right", game_ID);
     }
 
   } else {

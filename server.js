@@ -18,6 +18,10 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
 
+  socket.on('move_right', function(game_ID) {
+      game_sockets[game_ID].socket.emit('move_right')
+  });
+
   socket.on('controller_connect', function(g_id) {
 
       console.log("Controller trying to connect to " + g_id)

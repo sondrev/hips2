@@ -96,14 +96,12 @@
 
       io.on('game_connected',game_connected);
 
-      io.on('controller_connected', function(data){
-        logText(data);////
-        if (data.connected) {
-          logText("controller connected: ",data.c_id);
-        }else{
-          logText("controller disconnected: ",data.c_id);
-        }
-      });////
+      io.on('controller_connected', function(socket){
+          logText("controller connected: ",socket);
+        });
+      io.on('controller_disconnected', function(socket){
+          logText("controller disconnected: ",socket);
+        });
 
       init();
     </script>

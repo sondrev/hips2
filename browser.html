@@ -8,25 +8,63 @@
   </head>
 
   <body>
-    <canvas id='canvas' width='800' height='500'></canvas>
+    <canvas id='canvas' width='800' height='800'></canvas>
     <button onclick='moveRight();' class='load-image'>Load Image</button>
     <script>
       var io = io.connect();
 
       //SPILL ENGINE
-      var circle;
+      var circle = [];
+      var circles= 5;
+      var logger;
+      var loggerLines=4;
       var stage;
-      function moveRight() { circle.x += 20; }
-      function moveLeft() { circle.x -= 20; }
+      var log = [];
+
+      function moveRight() { circle[0].x += 20;logText('player moved'); }
+      function moveLeft() { circle[0].x -= 20;logText('player moved'); }
+      function logText(text) {
+        log.push(text);
+        if (log.length>loggerLines) log.shift();
+        logger.text='';
+        for (var i=0;i<log.length;i++) {
+          logger.text+=getFormattedDate()+': '+log[i]+'\n';
+        }
+      }
+
+      function getFormattedDate() {
+        var date = new Date();
+        var str = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return str;
+      }
+
       function init() {
         stage = new createjs.Stage("canvas");
-        circle = new createjs.Shape();
-        circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
-        circle.x = 100;
-        circle.y = 100;
-        stage.addChild(circle);
+
+        for (var i=0;i<circles;i++) {
+          c= new createjs.Shape();
+          c.graphics.beginFill("#"+((1<<24)*Math.random()|0).toString(16)).drawCircle(0, 0, 25);
+          c.x = 50;
+          c.y = 50+i*100
+          stage.addChild(c);
+          circle[i]=c;
+        }
+
+        logger = new createjs.Text("", "20px Arial", "#ff7700");
+        logger.x = 50;
+        logger.y = 600;
+        logger.textBaseline = "alphabetic";
+        stage.addChild(logger);
+        logText('Starting server')
+        logText('loool')
+        logText('loool 3')
+        logText('loool  4')
+        logText('loool   5')
+        logText('loool  6')
+
         createjs.Ticker.setFPS(60);
         createjs.Ticker.addEventListener("tick", stage);
+
       }
 
 

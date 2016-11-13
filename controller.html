@@ -115,7 +115,7 @@ var POP = {
         // this is where all entities will be moved
     // and checked for collisions, etc.
     update: function() {
-      console.log('update');
+      console.log(POP.Input.tapped);
         var i, checkCollision = false; ;
 
         if (POP.Input.tapped) {
@@ -272,6 +272,22 @@ POP.collides = function(a, b) {
         } else {
             return false;
         }
+};
+
+POP.Input = {
+
+    x: 0,
+    y: 0,
+    tapped :false,
+
+    set: function(data) {
+        this.x = data.pageX;
+        this.y = data.pageY;
+        this.tapped = true;
+
+        POP.Draw.circle(this.x, this.y, 10, 'red');
+    }
+
 };
 
 POP.Touch = function(x, y) {

@@ -103,9 +103,9 @@
             logText("controller connected: "+socket);
 
             players[socket] = {
-              socketId: socket;
-              playerId: numPlayers;
-              circle: circle[numPlayers];
+              socketId: socket,
+              playerId: numPlayers,
+              circle: circle[numPlayers]
             };
 
             numPlayers++;

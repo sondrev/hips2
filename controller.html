@@ -1,4 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width,
+      user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <style type="text/css">
+    body { margin: 0; padding: 0; background: #000;}
+    canvas { display: block; margin: 0 auto; background: #fff; }
+  </style>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="//davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
+  <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+
+</head>
+
+<body>
+
+<canvas> </canvas>
+<script>
+// all the code goes here
+</script>
+
+</body>
+</html>
+
 <!DOCTYPE html>
+<!--
 <html>
   <head>
     <title> Smartphone Controller </title>
@@ -23,16 +55,13 @@
         console.log("Connected successfully to the game, " + game_ID);
       });
 
-      function sendRightCommand() {
-        io.emit("move_right", game_ID);
-      }
-
-      function sendLeftCommand() {
-        io.emit("move_left", game_ID);
-      }
+      function sendRightCommand() {io.emit("move_right", game_ID);}
+      function sendLeftCommand() {io.emit("move_left", game_ID);}
     } else {
       console.log("No game ID sent")
     }
       </script>
   </body>
 </html>
+
+-->

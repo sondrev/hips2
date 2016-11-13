@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
         var g_id = controller_sockets[socket.id].game_id;
         var game = game_sockets[g_id];
         if (game) {
-          game.socket.emit("controller_disconnected", "sondre er kul");
+          game.socket.emit("controller_disconnected", socket.id);
           game.controller_id = undefined;
         }
 

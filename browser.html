@@ -9,7 +9,7 @@
 
   <body>
     <canvas id='canvas' width='800' height='800'></canvas>
-    <button onclick='moveRight(0);' class='load-image'>Load Image</button>
+    <button onclick='moveRight(0);' class='load-image'> Right </button>
     <script>
       var io = io.connect();
       var players = {}
@@ -23,8 +23,8 @@
       var stage;
       var log = [];
 
-      function moveRight(socketId) { c = players[socketId].circle; c.x += 20; logText('Player '+players[socketId].playerId+' moved right'); }
-      function moveLeft(socketId) { c = players[socketId].circle; c.x -= 20; logText('Player '+players[socketId].playerId+' moved left'); }
+      function moveRight(playerId) { c = circle[playerId]; c.x += 20; logText('Player ' + playerId + ' moved right'); }
+      function moveLeft(playerId) { c = circle[playerId]; c.x -= 20; logText('Player ' + playerId + ' moved left'); }
       function logText(text) {
         log.push(text);
         if (log.length>loggerLines) log.shift();
@@ -75,18 +75,18 @@
         io.emit('game_connect')
       });
 
-      var rightListener = function (socketId) { moveRight(socketId); }
-      var leftListener = function (socketId) { moveLeft(socketId); }
+      var rightListener = function (socketId) { moveRight(players[socketId].playerId); }
+      var leftListener = function (socketId) { moveLeft(players[socketId].playerId); }
 
       io.on('move_right', rightListener);
       io.on('move_left', leftListener);
 
       var game_connected = function() {
         logText("Connected to server")
-        var url = "http://hips2.herokuapp.com?id=" + io.id;
+        //var url = "http://hips2.herokuapp.com?id=" + io.id;
 
         //USED FOR LOCALHOST TESTING (Kristian's IP)
-        //var url = "http://129.177.118.167:3000/?id=" + io.id;
+        var url = "http://129.177.118.167:3000/?id=" + io.id;
 
         //Add QR-code
         console.log(url);
@@ -110,7 +110,7 @@
 
             numPlayers++;
           } else {
-            logText("Player with socket id already exist, " + socket)
+            logText("Player with socket id " + socket + " reconnected")
           }
         });
 

@@ -58,6 +58,12 @@ var POP = {
         // we're ready to resize
         POP.resize();
 
+        // include this at the end of POP.init function
+        POP.Draw.clear();
+        POP.Draw.rect(120,120,150,150, 'green');
+        POP.Draw.circle(100, 100, 50, 'rgba(255,0,0,0.5)');
+        POP.Draw.text('Hello World', 100, 100, 10, '#000');
+
     },
 
     resize: function() {//
@@ -86,6 +92,35 @@ var POP = {
         window.setTimeout(function() {
                 window.scrollTo(0,1);
         }, 1);
+    }
+
+};
+
+// abstracts various canvas operations into
+// standalone functions
+POP.Draw = {
+
+    clear: function() {
+        POP.ctx.clearRect(0, 0, POP.WIDTH, POP.HEIGHT);
+    },
+
+    rect: function(x, y, w, h, col) {
+        POP.ctx.fillStyle = col;
+        POP.ctx.fillRect(x, y, w, h);
+    },
+
+    circle: function(x, y, r, col) {
+        POP.ctx.fillStyle = col;
+        POP.ctx.beginPath();
+        POP.ctx.arc(x + 5, y + 5, r, 0,  Math.PI * 2, true);
+        POP.ctx.closePath();
+        POP.ctx.fill();
+    },
+
+    text: function(string, x, y, size, col) {
+        POP.ctx.font = 'bold '+size+'px Monospace';
+        POP.ctx.fillStyle = col;
+        POP.ctx.fillText(string, x, y);
     }
 
 };

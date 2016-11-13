@@ -94,11 +94,11 @@
       io.on('game_connected',game_connected);
 
       io.on('controller_connected', function(connected){
-        logText("controller connected: ",connected)
+        logText("controller connected")
         if (connected) {
-          qr.style.display = "none";
+          //qr.style.display = "none";
         }else{
-          qr.style.display = "block";
+          //qr.style.display = "block";
         }
       });
 

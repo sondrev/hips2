@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Smartphone Browser </title>
+  	<script src="/socket.io/socket.io.js"></script>
+    <script src="//davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
+    <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+  </head>
+
+  <body>
+    <canvas id='canvas' width='800' height='500'></canvas>
+    <button onclick='moveRight();' class='load-image'>Load Image</button>
+    <script>
+      var io = io.connect();
+
+      //SPILL ENGINE
+      var circle;
+      var stage;
+      function moveRight() { circle.x += 20; }
+      function moveLeft() { circle.x -= 20; }
+      function init() {
+        stage = new createjs.Stage("canvas");
+        circle = new createjs.Shape();
+        circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
+        circle.x = 100;
+        circle.y = 100;
+        stage.addChild(circle);
+        createjs.Ticker.setFPS(60);
+        createjs.Ticker.addEventListener("tick", stage);
+      }
+
+
+      var qr = document.createElement('div');
+
+      qr.id = "qr";
+      document.body.appendChild(qr);
+
+      io.on('connect', function() {
+          io.emit('game_connect')
+      });
+
+      var rightListener = function () { moveRight(); }
+      var leftListener = function () { moveLeft(); }
+
+      io.on('move_right', rightListener);
+      io.on('move_left', leftListener);
+
+      var game_connected = function() {
+        var url = "http://hips2.herokuapp.com?id=" + io.id;
+
+        //Add QR-code
+        console.log(url);
+        var qr_code = new QRCode("qr");
+        qr_code.makeCode(url);
+
+        io.removeListener('game_connected', game_connected);
+      };
+
+      io.on('game_connected', game_connected);
+
+      io.on('controller_connected', function(connected){
+        if (connected) {
+          qr.style.display = "none";
+        }else{
+          qr.style.display = "block";
+        }
+      });
+
+      init();
+    </script>
+  </body>
+</html>

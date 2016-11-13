@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Smartphone Controller </title>
+  	<script src="/socket.io/socket.io.js"></script>
+    <script src="//davidshimjs.github.com/qrcodejs/qrcode.min.js"></script>
+    <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+  </head>
+
+  <body>
+    <p> CONTROLLER </p>
+    <button onclick='sendLeftCommand();' class='load-image'> GO LEFT </button>
+    <button onclick='sendRightCommand();' class='load-image'> GO RIGHT </button>
+
+    <script>
+    var io = io.connect();
+
+    if (window.location.href.indexOf('?id=') > 0) {
+      var game_ID = window.location.href.split('?id=')[1];
+
+      io.emit('controller_connect', game_ID);
+      io.on('controller_connected', function(bool) {
+        if (bool) {
+          console.log("Connected successfully to the game, " + game_ID);
+        } else {
+          console.log("Could not connect to the game");
+        }
+      });
+
+      function sendRightCommand() {
+        io.emit("move_right", game_ID);
+      }
+
+      function sendLeftCommand() {
+        io.emit("move_left", game_ID);
+      }
+    } else {
+      console.log("No game ID sent")
+    }
+      </script>
+  </body>
+</html>

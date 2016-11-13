@@ -21,8 +21,8 @@
       var stage;
       var log = [];
 
-      function moveRight(p) { circle[p].x += 20;logText('player'+p+'moved'); }
-      function moveLeft(p) { circle[p].x -= 20;logText('player'+p+'moved'); }
+      function moveRight(p) { circle[p].x += 20;logText('player '+p+' moved'); }
+      function moveLeft(p) { circle[p].x -= 20;logText('player '+p+' moved'); }
       function logText(text) {
         log.push(text);
         if (log.length>loggerLines) log.shift();

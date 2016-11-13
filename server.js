@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
   socket.on('game_connect', function(){
       game_sockets[socket.id] = {
         socket: socket,
-        controller_ids: {}
+        controller_ids: []
       };
 
       console.log("Game connected");

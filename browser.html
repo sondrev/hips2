@@ -95,7 +95,7 @@
         io.removeListener('game_connected', game_connected);
       };
 
-      io.on('game_connected', function() {game_connected;logText("Connected to server")});
+      io.on('game_connected', function(game_connected) {game_connected;logText("Connected to server")});
 
       io.on('controller_connected', function(connected){
         logText("controller connected: ",connected)

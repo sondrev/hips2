@@ -55,12 +55,7 @@
         logger.y = 600;
         logger.textBaseline = "alphabetic";
         stage.addChild(logger);
-        logText('Starting server')
-        logText('loool')
-        logText('loool 3')
-        logText('loool  4')
-        logText('loool   5')
-        logText('loool  6')
+        logText('Game inited')
 
         createjs.Ticker.setFPS(60);
         createjs.Ticker.addEventListener("tick", stage);
@@ -85,6 +80,7 @@
       io.on('move_left', leftListener);
 
       var game_connected = function() {
+        logText("Connected to server")
         var url = "http://hips2.herokuapp.com?id=" + io.id;
 
         //Add QR-code
@@ -95,7 +91,7 @@
         io.removeListener('game_connected', game_connected);
       };
 
-      io.on('game_connected', function(game_connected) {game_connected;logText("Connected to server")});
+      io.on('game_connected',game_connected);
 
       io.on('controller_connected', function(connected){
         logText("controller connected: ",connected)

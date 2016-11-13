@@ -6,12 +6,14 @@ const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
+const BROWSER = path.join(__dirname, 'browser.html');
 
+var r = undefined
 var game_sockets = {};
 var controller_sockets = {}
 
 const server = express()
-  .use((req, res) => res.sendFile(INDEX) )
+  .use((req, res) => { res.sendFile(INDEX); r = res; } )
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const io = socketIO(server);
@@ -22,10 +24,12 @@ io.on('connection', (socket) => {
       game_sockets[game_ID].socket.emit('move_right')
   });
   socket.on('move_left', function(game_ID) {
-      game_sockets[game_ID].socket.emit('move_left')
+      game_sockets[game_ID].socket.emit('move_left');
+      r.sendFile(BROWSER);
   });
 
   socket.on('controller_connect', function(g_id) {
+
 
       console.log("Controller trying to connect to " + g_id)
 

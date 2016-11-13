@@ -28,6 +28,7 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
 
   socket.on('move_right', function(game_ID) {
+      console.log(socket.id + " tried to move right in game " + game_ID)
       var controller_id = socket.id;
       game_sockets[game_ID].socket.emit('move_right', controller_id)
   });
@@ -55,6 +56,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('game_connect', function(){
+      console.log("Adding game with id " + socket.id)
       game_sockets[socket.id] = {
         socket: socket,
         controller_ids: []

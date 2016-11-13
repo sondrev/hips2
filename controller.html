@@ -38,6 +38,7 @@ window.requestAnimFrame = (function(){
 // namespace our game
 var POP = {
 
+    entities: [],
     // set up some initial values
     WIDTH: 320,
     HEIGHT:  480,
@@ -101,6 +102,9 @@ var POP = {
             // as above
             e.preventDefault();
         }, false);
+
+        POP.entities.push(new POP.Bubble());
+
         POP.loop();
 
     },
@@ -109,12 +113,44 @@ var POP = {
     // and checked for collisions, etc.
     update: function() {
 
+        var i;
+
+        // spawn a new instance of Touch
+        // if the user has tapped the screen
+        if (POP.Input.tapped) {
+            POP.entities.push(new POP.Touch(POP.Input.x, POP.Input.y));
+            // set tapped back to false
+            // to avoid spawning a new touch
+            // in the next cycle
+            POP.Input.tapped = false;
+        }
+
+        // cycle through all entities and update as necessary
+        for (i = 0; i < POP.entities.length; i += 1) {
+            POP.entities[i].update();
+
+            // delete from array if remove property
+            // flag is set to true
+            if (POP.entities[i].remove) {
+                POP.entities.splice(i, 1);
+            }
+        }
+
     },
 
     // this is where we draw all the entities
+    // POP.render function
     render: function() {
 
-       POP.Draw.clear();
+        var i;
+
+       POP.Draw.rect(0, 0, POP.WIDTH, POP.HEIGHT, '#036');
+
+        // cycle through all entities and render to canvas
+        for (i = 0; i < POP.entities.length; i += 1) {
+            POP.entities[i].render();
+        }
+
     },
 
     // the actual loop
@@ -125,8 +161,8 @@ var POP = {
 
         requestAnimFrame( POP.loop );
 
-        //POP.update();
-        //POP.render();
+        POP.update();
+        POP.render();
     },
 
     resize: function() {//
@@ -188,6 +224,55 @@ POP.Input = {
 
       POP.Draw.circle(this.x, this.y, 10, 'red');
     }
+
+};
+POP.Bubble = function() {
+
+    this.type = 'bubble';
+    this.x = 100;
+    this.r = 5;                // the radius of the bubble
+    this.y = POP.HEIGHT + 100; // make sure it starts off screen
+    this.remove = false;
+
+    this.update = function() {
+
+        // move up the screen by 1 pixel
+        this.y -= 1;
+
+        // if off screen, flag for removal
+        if (this.y < -10) {
+            this.remove = true;
+        }
+
+    };
+
+    this.render = function() {
+
+        POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,255,255,1)');
+    };
+
+};
+
+POP.Touch = function(x, y) {
+
+    this.type = 'touch';    // we'll need this later
+    this.x = x;             // the x coordinate
+    this.y = y;             // the y coordinate
+    this.r = 5;             // the radius
+    this.opacity = 1;       // initial opacity; the dot will fade out
+    this.fade = 0.05;       // amount by which to fade on each game tick
+    this.remove = false;    // flag for removing this entity. POP.update
+                            // will take care of this
+    this.update = function() {
+        // reduce the opacity accordingly
+        this.opacity -= this.fade;
+        // if opacity if 0 or less, flag for removal
+        this.remove = (this.opacity < 0) ? true : false;
+    };
+
+    this.render = function() {
+        POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,0,0,'+this.opacity+')');
+    };
 
 };
 

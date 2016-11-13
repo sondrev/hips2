@@ -97,6 +97,7 @@
       io.on('game_connected',game_connected);
 
       io.on('controller_connected', function(data){
+        logText(data);
         if (data.connected) {
           logText("controller connected: ",data.c_id);
         }else{

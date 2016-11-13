@@ -8,25 +8,58 @@
   </head>
 
   <body>
-    <canvas id='canvas' width='800' height='500'></canvas>
-    <button onclick='moveRight();' class='load-image'>Load Image</button>
+    <canvas id='canvas' width='800' height='800'></canvas>
+    <button onclick='moveRight(0);' class='load-image'>Load Image</button>
     <script>
       var io = io.connect();
 
       //SPILL ENGINE
-      var circle;
+      var circle = [];
+      var circles= 5;
+      var logger;
+      var loggerLines=10;
       var stage;
-      function moveRight() { circle.x += 20; }
-      function moveLeft() { circle.x -= 20; }
+      var log = [];
+
+      function moveRight(p) { circle[p].x += 20;logText('player'+p+'moved'); }
+      function moveLeft(p) { circle[p].x -= 20;logText('player'+p+'moved'); }
+      function logText(text) {
+        log.push(text);
+        if (log.length>loggerLines) log.shift();
+        logger.text='';
+        for (var i=0;i<log.length;i++) {
+          logger.text+=getFormattedDate()+': '+log[i]+'\n';
+        }
+      }
+
+      function getFormattedDate() {
+        var date = new Date();
+        var str = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return str;
+      }
+
       function init() {
         stage = new createjs.Stage("canvas");
-        circle = new createjs.Shape();
-        circle.graphics.beginFill("Crimson").drawCircle(0, 0, 50);
-        circle.x = 100;
-        circle.y = 100;
-        stage.addChild(circle);
+
+        for (var i=0;i<circles;i++) {
+          c= new createjs.Shape();
+          c.graphics.beginFill("#"+((1<<24)*Math.random()|0).toString(16)).drawCircle(0, 0, 25);
+          c.x = 50;
+          c.y = 50+i*100
+          stage.addChild(c);
+          circle[i]=c;
+        }
+
+        logger = new createjs.Text("", "20px Arial", "#ff7700");
+        logger.x = 50;
+        logger.y = 600;
+        logger.textBaseline = "alphabetic";
+        stage.addChild(logger);
+        logText('Game inited')
+
         createjs.Ticker.setFPS(60);
         createjs.Ticker.addEventListener("tick", stage);
+
       }
 
 
@@ -36,16 +69,18 @@
       document.body.appendChild(qr);
 
       io.on('connect', function() {
-          io.emit('game_connect')
+        logText('trying to connect..');
+        io.emit('game_connect')
       });
 
-      var rightListener = function () { moveRight(); }
-      var leftListener = function () { moveLeft(); }
+      var rightListener = function () { moveRight(0); }
+      var leftListener = function () { moveLeft(0); }
 
       io.on('move_right', rightListener);
       io.on('move_left', leftListener);
 
       var game_connected = function() {
+        logText("Connected to server")
         var url = "http://hips2.herokuapp.com?id=" + io.id;
 
         //USED FOR LOCALHOST TESTING (Kristian's IP)
@@ -59,9 +94,10 @@
         io.removeListener('game_connected', game_connected);
       };
 
-      io.on('game_connected', game_connected);
+      io.on('game_connected',game_connected);
 
       io.on('controller_connected', function(connected){
+        logText("controller connected: ",connected)
         if (connected) {
           qr.style.display = "none";
         }else{

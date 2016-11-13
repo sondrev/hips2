@@ -12,6 +12,8 @@
     <button onclick='moveRight(0);' class='load-image'>Load Image</button>
     <script>
       var io = io.connect();
+      var players = {}
+      var numPlayers = 0;
 
       //SPILL ENGINE
       var circle = [];
@@ -21,8 +23,8 @@
       var stage;
       var log = [];
 
-      function moveRight(p) { circle[p].x += 20;logText('player '+p+' moved'); }
-      function moveLeft(p) { circle[p].x -= 20;logText('player '+p+' moved'); }
+      function moveRight(socketId) { c = players[socketId].circle; c.x += 20; logText('Player '+players[socketId].playerId+' moved right'); }
+      function moveLeft(socketId) { c = players[socketId].circle; c.x -= 20; logText('Player '+players[socketId].playerId+' moved left'); }
       function logText(text) {
         log.push(text);
         if (log.length>loggerLines) log.shift();
@@ -73,8 +75,8 @@
         io.emit('game_connect')
       });
 
-      var rightListener = function () { moveRight(0); }
-      var leftListener = function () { moveLeft(0); }
+      var rightListener = function (socketId) { moveRight(socketId); }
+      var leftListener = function (socketId) { moveLeft(socketId); }
 
       io.on('move_right', rightListener);
       io.on('move_left', leftListener);
@@ -97,11 +99,24 @@
       io.on('game_connected',game_connected);
 
       io.on('controller_connected', function(socket){
-        console.log(socket);
-          logText("controller connected: "+socket);
+          if (!players[socket]) {
+            logText("controller connected: "+socket);
+
+            players[socket] = {
+              socketId: socket;
+              playerId: numPlayers;
+              circle: circle[numPlayers];
+            };
+
+            numPlayers++;
+          } else {
+            logText("Player with socket id already exist, " + socket)
+          }
         });
+
+
       io.on('controller_disconnected', function(socket){
-        console.log(socket);
+          console.log(socket);
           logText("controller disconnected: "+socket);
 
         });

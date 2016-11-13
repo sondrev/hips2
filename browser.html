@@ -9,7 +9,7 @@
 
   <body>
     <canvas id='canvas' width='800' height='800'></canvas>
-    <button onclick='moveRight();' class='load-image'>Load Image</button>
+    <button onclick='moveRight(0);' class='load-image'>Load Image</button>
     <script>
       var io = io.connect();
 
@@ -21,8 +21,8 @@
       var stage;
       var log = [];
 
-      function moveRight(p) { circle[0].x += 20;logText('player'+p+'moved'); }
-      function moveLeft(p) { circle[0].x -= 20;logText('player'+p+'moved'); }
+      function moveRight(p) { circle[p].x += 20;logText('player'+p+'moved'); }
+      function moveLeft(p) { circle[p].x -= 20;logText('player'+p+'moved'); }
       function logText(text) {
         log.push(text);
         if (log.length>loggerLines) log.shift();
@@ -78,8 +78,8 @@
         io.emit('game_connect')
       });
 
-      var rightListener = function () { moveRight(1); }
-      var leftListener = function () { moveLeft(1); }
+      var rightListener = function () { moveRight(0); }
+      var leftListener = function () { moveLeft(0); }
 
       io.on('move_right', rightListener);
       io.on('move_left', leftListener);

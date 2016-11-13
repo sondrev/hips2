@@ -115,12 +115,12 @@ var POP = {
         // this is where all entities will be moved
     // and checked for collisions, etc.
     update: function() {
-
+      console.log('update');
         var i, checkCollision = false; ;
 
         if (POP.Input.tapped) {
+          console.log('clicked somewhere2');
             POP.entities.push(new POP.Touch(POP.Input.x, POP.Input.y));
-            console.log('clicked somewhere2');
             POP.Input.tapped = false;
             checkCollision = true;
         }

@@ -5,13 +5,21 @@ const socketIO = require('socket.io');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const INDEX = path.join(__dirname, 'index.html');
+const CONTROLLER = path.join(__dirname, 'controller.html');
+const BROWSER = path.join(__dirname, 'browser.html');
 
 var game_sockets = {};
 var controller_sockets = {}
 
 const server = express()
-  .use((req, res) => res.sendFile(INDEX) )
+  .use((req, res) =>  {
+    var game_id = req.query.id;
+    if (game_id) {
+      res.sendFile(CONTROLLER);
+    } else {
+      res.sendFile(BROWSER);
+    }
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const io = socketIO(server);
@@ -47,15 +55,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('game_connect', function(){
+      game_sockets[socket.id] = {
+        socket: socket,
+        controller_id: undefined
+      };
 
-  console.log("Game connected");
-
-  game_sockets[socket.id] = {
-    socket: socket,
-    controller_id: undefined
-  };
-
-  socket.emit("game_connected");
+      console.log("Game connected");
+      socket.emit("game_connected");
   });
 
   socket.on('disconnect', function () {

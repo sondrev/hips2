@@ -47,11 +47,11 @@ io.on('connection', (socket) => {
         };
 
         game_sockets[g_id].controller_ids.push(socket.id);
-        game_sockets[g_id].socket.emit('controller_connected', { connected: true, c_id: socket.id }) // Inform game about new controller
-        socket.emit('controller_connected', { connected: false, c_id: socket.id }); // Send confirmation to controllerSocket
+        game_sockets[g_id].socket.emit('controller_connected', socket.id) // Inform game about new controller
+        socket.emit('controller_connected',  socket.id); // Send confirmation to controllerSocket
     } else {
       console.log("Controller attempted to connect but failed");
-      socket.emit("controller_connected", { connected: false, c_id: socket.id });
+      socket.emit("controller_disconnected",socket.id );
     }
   });
 
@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
         for (let c_id in game_sockets[socket.id]) {
           if (controller_sockets[c_id]) {
               var conSocket = controller_sockets[c_id];
-              conSocket.socket.emit("controller_connected", { connected: false, c_id: socket.id });
+              conSocket.socket.emit("controller_disconnected", socket.id);
           }
         }
 
@@ -91,7 +91,7 @@ io.on('connection', (socket) => {
         var g_id = controller_sockets[socket.id].game_id;
         var game = game_sockets[g_id];
         if (game) {
-          game.socket.emit("controller_connected", { connected: true, c_id: socket.id });
+          game.socket.emit("controller_disconnected", socket.id });
           game.controller_id = undefined;
         }
 

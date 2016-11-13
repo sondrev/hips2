@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
         console.log("Game disconnected");
 
         //Tell all controllers that game disconnected
-        for (c_id in game_sockets[socket.id]) {
+        for (let c_id in game_sockets[socket.id]) {
           if (controller_sockets[c_id]) {
               var conSocket = controller_sockets[c_id];
               conSocket.socket.emit("controller_connected", false, socket.id);

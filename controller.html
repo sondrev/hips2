@@ -19,7 +19,8 @@
       var game_ID = window.location.href.split('?id=')[1];
 
       io.emit('controller_connect', game_ID);
-      io.on('controller_connected', function(bool) {
+      io.on('controller_connected', function(data) {
+        var bool = data.connected;
         if (bool) {
           console.log("Connected successfully to the game, " + game_ID);
         } else {

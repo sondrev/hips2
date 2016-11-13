@@ -46,6 +46,8 @@ io.on('connection', (socket) => {
           game_id: g_id
         };
 
+        console.log("Sending controller_connected " + socket.id + " to game id " + g_id)
+
         game_sockets[g_id].controller_ids.push(socket.id);
         game_sockets[g_id].socket.emit('controller_connected', socket.id) // Inform game about new controller
         socket.emit('controller_connected',  socket.id); // Send confirmation to controllerSocket
@@ -91,7 +93,7 @@ io.on('connection', (socket) => {
         var g_id = controller_sockets[socket.id].game_id;
         var game = game_sockets[g_id];
         if (game) {
-          game.socket.emit("controller_disconnected", socket.id });
+          game.socket.emit("controller_disconnected", socket.id);
           game.controller_id = undefined;
         }
 

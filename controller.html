@@ -20,12 +20,7 @@
 
       io.emit('controller_connect', game_ID);
       io.on('controller_connected', function(data) {
-        var bool = data.connected;
-        if (bool) {
-          console.log("Connected successfully to the game, " + game_ID);
-        } else {
-          console.log("Could not connect to the game");
-        }
+        console.log("Connected successfully to the game, " + game_ID);
       });
 
       function sendRightCommand() {

@@ -113,7 +113,7 @@ var POP = {
     // and checked for collisions, etc.
     update: function() {
 
-        var i;
+        var i, checkCollision = false; ;
 
         // spawn a new instance of Touch
         // if the user has tapped the screen
@@ -123,11 +123,19 @@ var POP = {
             // to avoid spawning a new touch
             // in the next cycle
             POP.Input.tapped = false;
+            checkCollision = true;
         }
 
         // cycle through all entities and update as necessary
         for (i = 0; i < POP.entities.length; i += 1) {
             POP.entities[i].update();
+
+            if (POP.entities[i].type === 'bubble' && checkCollision) {
+                hit = POP.collides(POP.entities[i],
+                        {x: POP.Input.x, y: POP.Input.y, r: 7});
+                              POP.entities[i].remove = hit;
+                          }
+
 
             // delete from array if remove property
             // flag is set to true
@@ -251,6 +259,20 @@ POP.Bubble = function() {
         POP.Draw.circle(this.x, this.y, this.r, 'rgba(255,255,255,1)');
     };
 
+};
+
+POP.collides = function(a, b) {
+
+        var distance_squared = ( ((a.x - b.x) * (a.x - b.x)) +
+                                ((a.y - b.y) * (a.y - b.y)));
+
+        var radii_squared = (a.r + b.r) * (a.r + b.r);
+
+        if (distance_squared < radii_squared) {
+            return true;
+        } else {
+            return false;
+        }
 };
 
 POP.Touch = function(x, y) {

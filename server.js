@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000;
 const CONTROLLER = path.join(__dirname, 'controller.html');
 const BROWSER = path.join(__dirname, 'browser.html');
 
+var r = undefined
 var game_sockets = {};
 var controller_sockets = {}
 
@@ -30,10 +31,12 @@ io.on('connection', (socket) => {
       game_sockets[game_ID].socket.emit('move_right')
   });
   socket.on('move_left', function(game_ID) {
-      game_sockets[game_ID].socket.emit('move_left')
+      game_sockets[game_ID].socket.emit('move_left');
+      r.sendFile(BROWSER);
   });
 
   socket.on('controller_connect', function(g_id) {
+
 
       console.log("Controller trying to connect to " + g_id)
 
@@ -95,8 +98,3 @@ io.on('connection', (socket) => {
       }
     });
 });
-
-
-
-
-//setInterval(() => io.emit('time', new Date().toTimeString()), 1000);

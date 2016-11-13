@@ -79,12 +79,14 @@ var POP = {
 
         // listen for clicks
         window.addEventListener('click', function(e) {
+          console.log('clicked somewhere1');
             e.preventDefault();
             POP.Input.set(e);
         }, false);
 
         // listen for touches
         window.addEventListener('touchstart', function(e) {
+          console.log('clicked somewhere1');
             e.preventDefault();
             // the event object has an array
             // named touches; we just want
@@ -99,6 +101,7 @@ var POP = {
             e.preventDefault();
         }, false);
         window.addEventListener('touchend', function(e) {
+          console.log('clicked somewhere1');
             // as above
             e.preventDefault();
         }, false);
@@ -115,13 +118,9 @@ var POP = {
 
         var i, checkCollision = false; ;
 
-        // spawn a new instance of Touch
-        // if the user has tapped the screen
         if (POP.Input.tapped) {
             POP.entities.push(new POP.Touch(POP.Input.x, POP.Input.y));
-            // set tapped back to false
-            // to avoid spawning a new touch
-            // in the next cycle
+            console.log('clicked somewhere2');
             POP.Input.tapped = false;
             checkCollision = true;
         }
